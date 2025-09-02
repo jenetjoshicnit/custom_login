@@ -1,0 +1,68 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+<div class="login-page-wrapper">
+    <div class="login-sidebar">
+        <img src="/assets/my_custom_login/images/your_logo.png" alt="Logo" class="sidebar-logo">
+        <h1>Welcome to Our ERP!</h1>
+        <p>Login to manage your business operations efficiently.</p>
+    </div>
+
+    <div class="login-form-container">
+        <div class="card login-card">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Secure Login</h2>
+                <form class="login-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="usr" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="pwd" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+                    <p class="text-center mt-3"><a href="/forgot">Forgot password?</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function() {
+    $('.login-form').submit(function(e) {
+        e.preventDefault();
+        var email = $('#email').val();
+        var password = $('#password').val();
+
+        frappe.call({
+            method: "frappe.core.doctype.user.user.login",
+            args: { usr: email, pwd: password },
+            callback: function(r) {
+                if(r.message=="Logged In") {
+                    window.location.href = "/app";
+                } else {
+                    frappe.msgprint(__('Invalid Login Credentials'), __('Login Failed'), 'error');
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block style %}
+<style>
+/* Your custom CSS here */
+body { background: #f8f9fa; }
+.login-page-wrapper { display: flex; min-height: 100vh; }
+.login-sidebar { flex: 1; background: #343a40; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+.login-form-container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; }
+.login-card { max-width: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; }
+.btn-primary { background: #007bff; border-color: #007bff; }
+.btn-primary:hover { background: #0056b3; }
+</style>
+{% endblock %}
