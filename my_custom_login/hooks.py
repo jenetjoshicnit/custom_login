@@ -5,6 +5,10 @@ app_description = "login page change"
 app_email = "jenet.joshi@cnitsolution.com"
 app_license = "mit"
 
+# Set the login page as the home page
+home_page = "/app/home"  # This will replace the default ERPNext login page
+
+
 # Apps
 # ------------------
 
